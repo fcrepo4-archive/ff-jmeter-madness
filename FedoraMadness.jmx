@@ -396,23 +396,69 @@
             <stringProp name="parameters"></stringProp>
             <stringProp name="script">log.info(vars.get(&apos;objectdir&apos;));
 importPackage(java.io)
-f = new File(vars.get(&apos;HARNESS_FIXTURES_DIRECTORY&apos;)+ &quot;/objects/&quot; + vars.get(&apos;objectdir&apos;) + &quot;/data&quot;);
-list = f.listFiles();
-
-log.info(list.length);
+fstream = new FileInputStream(vars.get(&apos;HARNESS_FIXTURES_DIRECTORY&apos;)+ &quot;/objects/&quot; + vars.get(&apos;objectdir&apos;) + &quot;/manifest-md5.txt&quot;);
+dis = new DataInputStream(fstream);
+isr = new InputStreamReader(dis);
+br = new BufferedReader(isr);
 
 for(i = 0; i&lt; 100; i++) {
-log.info(list[i]);
   vars.remove(&quot;FILE_&quot; + i);
 }
 
-for(i = 0; i&lt; list.length; i++) {
-log.info(list[i]);
-  vars.put(&quot;FILE_&quot; + (i+1), list[i]);
+var i = 0;
+var strLine;
+while((strLine = br.readLine()) != null) {
+i++;
+filepath = vars.get(&apos;HARNESS_FIXTURES_DIRECTORY&apos;)+ &quot;/objects/&quot; + vars.get(&apos;objectdir&apos;) + &quot;/&quot; + strLine.split(&quot; &quot;).slice(-1)[0];
+f = new File(filepath);
+
+if(f.exists()) {
+log.info(strLine.split(&quot; &quot;).slice(-1)[0]);
+vars.put(&quot;FILE_&quot; + i, filepath);
+}
 }</stringProp>
             <stringProp name="scriptLanguage">javascript</stringProp>
           </BSFPostProcessor>
           <hashTree/>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
+          <hashTree>
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>true</xml>
+                  <fieldNames>false</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fedora Delete Object Request" enabled="true">
             <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -652,45 +698,6 @@ log.info(list[i]);
               <stringProp name="Scope.variable">${__StringFromFile(${HARNESS_FIXTURES_DIRECTORY}/objects/${objectdir}/manifest-md5.txt, MANIFEST_LINE,,1)}</stringProp>
             </RegexExtractor>
             <hashTree/>
-            <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
-              <boolProp name="displayJMeterProperties">false</boolProp>
-              <boolProp name="displayJMeterVariables">true</boolProp>
-              <boolProp name="displaySystemProperties">false</boolProp>
-            </DebugSampler>
-            <hashTree>
-              <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-                <boolProp name="ResultCollector.error_logging">false</boolProp>
-                <objProp>
-                  <name>saveConfig</name>
-                  <value class="SampleSaveConfiguration">
-                    <time>true</time>
-                    <latency>true</latency>
-                    <timestamp>true</timestamp>
-                    <success>true</success>
-                    <label>true</label>
-                    <code>true</code>
-                    <message>true</message>
-                    <threadName>true</threadName>
-                    <dataType>true</dataType>
-                    <encoding>false</encoding>
-                    <assertions>true</assertions>
-                    <subresults>true</subresults>
-                    <responseData>false</responseData>
-                    <samplerData>false</samplerData>
-                    <xml>true</xml>
-                    <fieldNames>false</fieldNames>
-                    <responseHeaders>false</responseHeaders>
-                    <requestHeaders>false</requestHeaders>
-                    <responseDataOnError>false</responseDataOnError>
-                    <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-                    <assertionsResultsToSave>0</assertionsResultsToSave>
-                    <bytes>true</bytes>
-                  </value>
-                </objProp>
-                <stringProp name="filename"></stringProp>
-              </ResultCollector>
-              <hashTree/>
-            </hashTree>
           </hashTree>
         </hashTree>
         <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
