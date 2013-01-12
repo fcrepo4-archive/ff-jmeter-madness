@@ -86,7 +86,7 @@
           </elementProp>
           <elementProp name="numthreads" elementType="Argument">
             <stringProp name="Argument.name">numthreads</stringProp>
-            <stringProp name="Argument.value">${__property(numthreads,,5)}</stringProp>
+            <stringProp name="Argument.value">${__property(numthreads,,1)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -111,7 +111,7 @@ for(i = 0; i&lt; list.length; i++) {
 }</stringProp>
       </BSFPostProcessor>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Modeshape group" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Modeshape group" enabled="true">
         <stringProp name="TestPlan.comments">Loops through filenames and create nodes for each</stringProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -404,7 +404,7 @@ while((strLine = br.readLine()) != null) {
               <responseData>false</responseData>
               <samplerData>false</samplerData>
               <xml>false</xml>
-              <fieldNames>false</fieldNames>
+              <fieldNames>true</fieldNames>
               <responseHeaders>false</responseHeaders>
               <requestHeaders>false</requestHeaders>
               <responseDataOnError>false</responseDataOnError>
@@ -417,7 +417,7 @@ while((strLine = br.readLine()) != null) {
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Fedora group" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Fedora group" enabled="false">
         <stringProp name="TestPlan.comments">Loops through filenames and create nodes for each</stringProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -740,7 +740,7 @@ vars.put(&quot;FILE_&quot; + i, filepath);
               <responseData>false</responseData>
               <samplerData>false</samplerData>
               <xml>false</xml>
-              <fieldNames>false</fieldNames>
+              <fieldNames>true</fieldNames>
               <responseHeaders>false</responseHeaders>
               <requestHeaders>false</requestHeaders>
               <responseDataOnError>false</responseDataOnError>
