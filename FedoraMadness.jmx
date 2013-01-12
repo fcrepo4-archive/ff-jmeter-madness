@@ -84,6 +84,11 @@
             <stringProp name="Argument.value">objects.csv</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="numthreads" elementType="Argument">
+            <stringProp name="Argument.name">numthreads</stringProp>
+            <stringProp name="Argument.value">${__property(numthreads,,5)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -91,28 +96,29 @@
         <stringProp name="scriptLanguage">javascript</stringProp>
         <stringProp name="parameters"></stringProp>
         <stringProp name="filename"></stringProp>
-        <stringProp name="script">log.info(vars.get(&apos;objectdir&apos;));
-importPackage(java.io)
-f = new File(vars.get(&apos;HARNESS_FIXTURES_DIRECTORY&apos;)+ &quot;/objects/&quot;);
+        <stringProp name="script">importPackage(java.io)
+
+var fixtures_dir = vars.get(&apos;HARNESS_FIXTURES_DIRECTORY&apos;)+ &quot;/objects/&quot;;
+log.info(&quot;Loading fixture objects from &quot; + fixtures_dir);
+
+// using the java.io.File class:
+f = new File(fixtures_dir);
 list = f.listFiles();
 
-for(i = 0; i&lt; 100; i++) {
-  vars.remove(&quot;FIXTURE_OBJECTS_&quot; + i);
-}
-
 for(i = 0; i&lt; list.length; i++) {
-vars.put(&quot;FIXTURE_OBJECTS_&quot; + (i+1), list[i]);
+  log.info(&quot;Found object: &quot; + list[i]);
+  vars.put(&quot;FIXTURE_OBJECTS_&quot; + (i+1), list[i]);
 }</stringProp>
       </BSFPostProcessor>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Modeshape group" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Modeshape group" enabled="false">
         <stringProp name="TestPlan.comments">Loops through filenames and create nodes for each</stringProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">${__property(loopcount,,1)}</stringProp>
+          <stringProp name="LoopController.loops">${__property(numloops,,1)}</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">${__property(numthreads,,1)}</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${numthreads}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <longProp name="ThreadGroup.start_time">1357582481000</longProp>
         <longProp name="ThreadGroup.end_time">1357582481000</longProp>
@@ -206,28 +212,40 @@ vars.put(&quot;FIXTURE_OBJECTS_&quot; + (i+1), list[i]);
           <BSFPostProcessor guiclass="TestBeanGUI" testclass="BSFPostProcessor" testname="BSF PostProcessor" enabled="true">
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(vars.get(&apos;objectdir&apos;));
-importPackage(java.io)
+            <stringProp name="script">importPackage(java.io)
+
+var objectdir = vars.get(&apos;objectdir&apos;);
+
+log.info(&quot;Processing object from &quot; + objectdir);
+
+log.debug(&quot;  -- loading manifest-md5.txt&quot;);
 fstream = new FileInputStream(vars.get(&apos;objectdir&apos;) + &quot;/manifest-md5.txt&quot;);
 dis = new DataInputStream(fstream);
 isr = new InputStreamReader(dis);
 br = new BufferedReader(isr);
 
+// remove old variables??
 for(i = 0; i&lt; 100; i++) {
   vars.remove(&quot;FILE_&quot; + i);
 }
 
 var i = 0;
 var strLine;
-while((strLine = br.readLine()) != null) {
-i++;
-filepath = vars.get(&apos;objectdir&apos;) + &quot;/&quot; + strLine.split(&quot; &quot;).slice(-1)[0];
-f = new File(filepath);
 
-if(f.exists()) {
-log.info(strLine.split(&quot; &quot;).slice(-1)[0]);
-vars.put(&quot;FILE_&quot; + i, filepath);
-}
+while((strLine = br.readLine()) != null) {
+  i++; // ForEach controller is 1-based
+
+  basename = strLine.split(&quot; &quot;).slice(-1)[0];
+
+  filepath = objectdir + &quot;/&quot; + basename;
+  f = new File(filepath);
+
+  if(f.exists()) {
+    log.info(&quot;Found file &quot; + basename);
+    vars.put(&quot;FILE_&quot; + i, filepath);
+  } else {
+    log.info(&quot;Manifest listed file, but was not found: &quot; + basename);
+  }
 }</stringProp>
             <stringProp name="scriptLanguage">javascript</stringProp>
           </BSFPostProcessor>
@@ -251,7 +269,7 @@ vars.put(&quot;FILE_&quot; + i, filepath);
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
             <stringProp name="HTTPSampler.protocol"></stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/${MODESHAPE_SERVER_APPLICATION_CONTEXT}/${MODESHAPE_REPO_NAME}/${MODESHAPE_WORKSPACE_NAME}${__log(/items/fedora/${__counter(FALSE,nodename)},OUT,,Creating node )}</stringProp>
+            <stringProp name="HTTPSampler.path">/${MODESHAPE_SERVER_APPLICATION_CONTEXT}/${MODESHAPE_REPO_NAME}/${MODESHAPE_WORKSPACE_NAME}${__log(/items/fedora/${__threadNum}_${__counter(FALSE,nodename)},OUT,,Creating node )}</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -311,7 +329,7 @@ vars.put(&quot;FILE_&quot; + i, filepath);
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/${MODESHAPE_SERVER_APPLICATION_CONTEXT}/${MODESHAPE_REPO_NAME}/${MODESHAPE_WORKSPACE_NAME}/binary/${__log(fedora/${nodename},OUT,,Adding binary content )}/binaryContent</stringProp>
+              <stringProp name="HTTPSampler.path">/${MODESHAPE_SERVER_APPLICATION_CONTEXT}/${MODESHAPE_REPO_NAME}/${MODESHAPE_WORKSPACE_NAME}/binary/${__log(fedora/${__threadNum}_${nodename},OUT,,Adding binary content )}/binaryContent</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -395,18 +413,18 @@ vars.put(&quot;FILE_&quot; + i, filepath);
               <bytes>true</bytes>
             </value>
           </objProp>
-          <stringProp name="filename">modeshape-data.csv</stringProp>
+          <stringProp name="filename">modeshape-data-${numthreads}threads.csv</stringProp>
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Fedora group" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Fedora group" enabled="true">
         <stringProp name="TestPlan.comments">Loops through filenames and create nodes for each</stringProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">${__property(loopcount,,1)}</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">${__property(numthreads,,1)}</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${numthreads}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <longProp name="ThreadGroup.start_time">1357582481000</longProp>
         <longProp name="ThreadGroup.end_time">1357582481000</longProp>
@@ -494,7 +512,7 @@ vars.put(&quot;FILE_&quot; + i, filepath);
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
             <stringProp name="HTTPSampler.protocol"></stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${__counter(FALSE,nodename)},OUT,,Deleting node )}</stringProp>
+            <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${__threadNum}_${__counter(FALSE,nodename)},OUT,,Deleting node )}</stringProp>
             <stringProp name="HTTPSampler.method">DELETE</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -555,7 +573,7 @@ vars.put(&quot;FILE_&quot; + i, filepath);
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
             <stringProp name="HTTPSampler.protocol"></stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${__counter(FALSE,nodename)},OUT,,Creating node )}</stringProp>
+            <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${__threadNum}_${nodename},OUT,,Creating node )}</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -615,7 +633,7 @@ vars.put(&quot;FILE_&quot; + i, filepath);
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${nodename},OUT,,Adding binary content )}/datastreams/${__javaScript(&quot;${filename}&quot;.split(&quot;/&quot;).slice(-1)[0])}?controlGroup=M</stringProp>
+              <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${__threadNum}_${nodename},OUT,,Adding binary content )}/datastreams/DS_${__javaScript(&quot;${filename}&quot;.split(&quot;/&quot;).slice(-1)[0])}?controlGroup=M</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -731,7 +749,7 @@ vars.put(&quot;FILE_&quot; + i, filepath);
               <bytes>true</bytes>
             </value>
           </objProp>
-          <stringProp name="filename">graph-fedora.csv</stringProp>
+          <stringProp name="filename">graph-fedora-${numthreads}threads.csv</stringProp>
         </ResultCollector>
         <hashTree/>
       </hashTree>
