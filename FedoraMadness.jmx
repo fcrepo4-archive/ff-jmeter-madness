@@ -89,11 +89,6 @@
     <hashTree>
       <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
         <collectionProp name="Arguments.arguments">
-          <elementProp name="HARNESS_FIXTURES_OBJECT_LIST" elementType="Argument">
-            <stringProp name="Argument.name">HARNESS_FIXTURES_OBJECT_LIST</stringProp>
-            <stringProp name="Argument.value">objects.csv</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="numthreads" elementType="Argument">
             <stringProp name="Argument.name">numthreads</stringProp>
             <stringProp name="Argument.value">${__property(numthreads,,1)}</stringProp>
