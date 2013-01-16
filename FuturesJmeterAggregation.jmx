@@ -97,7 +97,7 @@
         </collectionProp>
       </Arguments>
       <hashTree/>
-      <BSFPostProcessor guiclass="TestBeanGUI" testclass="BSFPostProcessor" testname="BSF PostProcessor" enabled="true">
+      <BSFPostProcessor guiclass="TestBeanGUI" testclass="BSFPostProcessor" testname="Assemble list of Fixture objects" enabled="true">
         <stringProp name="scriptLanguage">javascript</stringProp>
         <stringProp name="parameters"></stringProp>
         <stringProp name="filename"></stringProp>
@@ -208,13 +208,13 @@ for(i = 0; i&lt; list.length; i++) {
           <stringProp name="TestPlan.comments">Creates the space for /fedora content</stringProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="ForEach Controller" enabled="true">
+        <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="ForEach fixture object" enabled="true">
           <stringProp name="ForeachController.inputVal">FIXTURE_OBJECTS</stringProp>
           <stringProp name="ForeachController.returnVal">objectdir</stringProp>
           <boolProp name="ForeachController.useSeparator">true</boolProp>
         </ForeachController>
         <hashTree>
-          <BSFPostProcessor guiclass="TestBeanGUI" testclass="BSFPostProcessor" testname="BSF PostProcessor" enabled="true">
+          <BSFPostProcessor guiclass="TestBeanGUI" testclass="BSFPostProcessor" testname="Get list of files (from BagIt manifest)" enabled="true">
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
             <stringProp name="script">importPackage(java.io)
@@ -318,7 +318,7 @@ while((strLine = br.readLine()) != null) {
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="ForEach Controller" enabled="true">
+          <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="ForEach file" enabled="true">
             <stringProp name="ForeachController.inputVal">FILE</stringProp>
             <stringProp name="ForeachController.returnVal">filename</stringProp>
             <boolProp name="ForeachController.useSeparator">true</boolProp>
