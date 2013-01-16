@@ -91,7 +91,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="numthreads" elementType="Argument">
             <stringProp name="Argument.name">numthreads</stringProp>
-            <stringProp name="Argument.value">${__property(numthreads,,1)}</stringProp>
+            <stringProp name="Argument.value">${__property(numthreads,,5)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -1202,9 +1202,9 @@ vars.put(&quot;FILE_&quot; + i, filepath);
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
+          <stringProp name="LoopController.loops">${__property(loopcount,,1)}</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${numthreads}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <longProp name="ThreadGroup.start_time">1357582481000</longProp>
         <longProp name="ThreadGroup.end_time">1357582481000</longProp>
@@ -1506,7 +1506,7 @@ if (resp.getStatusLine().getStatusCode() == 201){
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
             <name>saveConfig</name>
@@ -1538,7 +1538,7 @@ if (resp.getStatusLine().getStatusCode() == 201){
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
             <name>saveConfig</name>
@@ -1553,12 +1553,12 @@ if (resp.getStatusLine().getStatusCode() == 201){
               <threadName>true</threadName>
               <dataType>true</dataType>
               <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
+              <assertions>false</assertions>
+              <subresults>false</subresults>
               <responseData>false</responseData>
               <samplerData>false</samplerData>
-              <xml>true</xml>
-              <fieldNames>false</fieldNames>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
               <responseHeaders>false</responseHeaders>
               <requestHeaders>false</requestHeaders>
               <responseDataOnError>false</responseDataOnError>
@@ -1567,7 +1567,7 @@ if (resp.getStatusLine().getStatusCode() == 201){
               <bytes>true</bytes>
             </value>
           </objProp>
-          <stringProp name="filename"></stringProp>
+          <stringProp name="filename">lily-${numthreads}threads.csv</stringProp>
         </ResultCollector>
         <hashTree/>
       </hashTree>
