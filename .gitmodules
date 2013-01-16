@@ -3,4 +3,4 @@
 	url = git://github.com/projecthydra/hydra-jetty.git
 [submodule "fixtures"]
 	path = fixtures
-	url = git@github.com:futures/ff-fixtures.git
+	url = git://github.com/futures/ff-fixtures.git
