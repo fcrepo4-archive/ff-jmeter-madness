@@ -9,22 +9,22 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="FEDORA_SERVER_NAME" elementType="Argument">
             <stringProp name="Argument.name">FEDORA_SERVER_NAME</stringProp>
-            <stringProp name="Argument.value">${__property(server,,localhost)}</stringProp>
+            <stringProp name="Argument.value">${__property(fedora_server,,localhost)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="FEDORA_SERVER_PORTNUMBER" elementType="Argument">
             <stringProp name="Argument.name">FEDORA_SERVER_PORTNUMBER</stringProp>
-            <stringProp name="Argument.value">${__property(port,,8983)}</stringProp>
+            <stringProp name="Argument.value">${__property(fedora_port,,8983)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="FEDORA_SERVER_APPLICATION_CONTEXT" elementType="Argument">
             <stringProp name="Argument.name">FEDORA_SERVER_APPLICATION_CONTEXT</stringProp>
-            <stringProp name="Argument.value">${__property(context,,fedora)}</stringProp>
+            <stringProp name="Argument.value">${__property(fedora_context,,fedora)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="MODESHAPE_SERVER_NAME" elementType="Argument">
             <stringProp name="Argument.name">MODESHAPE_SERVER_NAME</stringProp>
-            <stringProp name="Argument.value">${__property(server,,localhost)}</stringProp>
+            <stringProp name="Argument.value">${__property(modeshape_server,,localhost)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="MODESHAPE_REPO_NAME" elementType="Argument">
@@ -39,22 +39,22 @@
           </elementProp>
           <elementProp name="MODESHAPE_SERVER_PORTNUMBER" elementType="Argument">
             <stringProp name="Argument.name">MODESHAPE_SERVER_PORTNUMBER</stringProp>
-            <stringProp name="Argument.value">${__property(port,,8080)}</stringProp>
+            <stringProp name="Argument.value">${__property(modeshape_port,,8080)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="MODESHAPE_SERVER_APPLICATION_CONTEXT" elementType="Argument">
             <stringProp name="Argument.name">MODESHAPE_SERVER_APPLICATION_CONTEXT</stringProp>
-            <stringProp name="Argument.value">${__property(context,,resources)}</stringProp>
+            <stringProp name="Argument.value">${__property(modeshape_context,,resources)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="DATABANK_HOST" elementType="Argument">
             <stringProp name="Argument.name">DATABANK_HOST</stringProp>
-            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.value">${__property(databank_server,,localhost)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="DATABANK_PORT" elementType="Argument">
             <stringProp name="Argument.name">DATABANK_PORT</stringProp>
-            <stringProp name="Argument.value">5000</stringProp>
+            <stringProp name="Argument.value">${__property(databank_port,,5000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="DATABANK_PREFIX" elementType="Argument">
@@ -74,12 +74,12 @@
           </elementProp>
           <elementProp name="LILY_SERVER_NAME" elementType="Argument">
             <stringProp name="Argument.name">LILY_SERVER_NAME</stringProp>
-            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.value">${__property(lily_server,,localhost)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="LILY_SERVER_PORTNUMBER" elementType="Argument">
             <stringProp name="Argument.name">LILY_SERVER_PORTNUMBER</stringProp>
-            <stringProp name="Argument.value">12060</stringProp>
+            <stringProp name="Argument.value">${__property(lily_port,,12060)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -116,7 +116,7 @@ for(i = 0; i&lt; list.length; i++) {
 }</stringProp>
       </BSFPostProcessor>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Modeshape group" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Modeshape group" enabled="true">
         <stringProp name="TestPlan.comments">Loops through filenames and create nodes for each</stringProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -422,7 +422,7 @@ while((strLine = br.readLine()) != null) {
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Fedora group" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Fedora group" enabled="true">
         <stringProp name="TestPlan.comments">Loops through filenames and create nodes for each</stringProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -758,7 +758,7 @@ vars.put(&quot;FILE_&quot; + i, filepath);
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Databank group" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Databank group" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
