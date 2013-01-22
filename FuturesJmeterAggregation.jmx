@@ -103,7 +103,7 @@
         <stringProp name="filename"></stringProp>
         <stringProp name="script">importPackage(java.io)
 
-var fixtures_dir = vars.get(&apos;HARNESS_FIXTURES_DIRECTORY&apos;)+ &quot;/objects/&quot;;
+var fixtures_dir = vars.get(&apos;HARNESS_FIXTURES_DIRECTORY&apos;)+ &quot;/objects&quot;;
 log.info(&quot;Loading fixture objects from &quot; + fixtures_dir);
 
 // using the java.io.File class:
@@ -116,7 +116,7 @@ for(i = 0; i&lt; list.length; i++) {
 }</stringProp>
       </BSFPostProcessor>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Modeshape group" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Modeshape group" enabled="false">
         <stringProp name="TestPlan.comments">Loops through filenames and create nodes for each</stringProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -422,7 +422,7 @@ while((strLine = br.readLine()) != null) {
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Fedora group" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Fedora group" enabled="false">
         <stringProp name="TestPlan.comments">Loops through filenames and create nodes for each</stringProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -758,7 +758,7 @@ vars.put(&quot;FILE_&quot; + i, filepath);
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Databank group" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Databank group" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -1514,101 +1514,13 @@ if (prev.getResponseCode() == &quot;409&quot;) {
           </collectionProp>
         </HeaderManager>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CREATE Field jm$data" enabled="true">
-          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&#xd;
-  action : &quot;create&quot;,&#xd;
-  fieldType: {&#xd;
-    name: &quot;jm$data&quot;,&#xd;
-    valueType: &quot;BLOB&quot;,&#xd;
-    scope: &quot;versioned&quot;,&#xd;
-    namespaces: { &quot;jmeter&quot;: &quot;jm&quot; }&#xd;
-  }&#xd;
-}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">${LILY_SERVER_NAME}</stringProp>
-          <stringProp name="HTTPSampler.port">${LILY_SERVER_PORTNUMBER}</stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">repository/schema/fieldType</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.monitor">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="TestPlan.comments">Creates the blob field in lily for storing binaries</stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <BSFPostProcessor guiclass="TestBeanGUI" testclass="BSFPostProcessor" testname="BSF PostProcessor" enabled="true">
-            <stringProp name="scriptLanguage">javascript</stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="script">if (prev.getResponseCode() == &quot;409&quot;) {
-	prev.setResponseOK(); 
-}</stringProp>
-          </BSFPostProcessor>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CREATE Record" enabled="true">
-          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&#xd;
-  action : &quot;create&quot;,&#xd;
-  recordType: {&#xd;
-    name: &quot;jm$record&quot;,&#xd;
-    fields: [&#xd;
-      {name: &quot;jm$name&quot;, mandatory: true},&#xd;
-      {name: &quot;jm$data&quot;, mandatory: true}&#xd;
-    ],&#xd;
-    namespaces: {&quot;jmeter&quot;:&quot;jm&quot;}&#xd;
-  }&#xd;
-}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">${LILY_SERVER_NAME}</stringProp>
-          <stringProp name="HTTPSampler.port">${LILY_SERVER_PORTNUMBER}</stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">repository/schema/recordTypeById</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.monitor">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="TestPlan.comments">Creates the blob field in lily for storing binaries</stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <BSFPostProcessor guiclass="TestBeanGUI" testclass="BSFPostProcessor" testname="BSF PostProcessor" enabled="true">
-            <stringProp name="scriptLanguage">javascript</stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="script">if (prev.getResponseCode() == &quot;409&quot;) {
-	prev.setResponseOK(); 
-}
-</stringProp>
-          </BSFPostProcessor>
-          <hashTree/>
-        </hashTree>
+        <BSFSampler guiclass="TestBeanGUI" testclass="BSFSampler" testname="BSF Sampler" enabled="true">
+          <stringProp name="scriptLanguage">beanshell</stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="script">log.info(&quot;----------------------------LILY-DISTINCT-RECORDS--------------------------&quot;);</stringProp>
+        </BSFSampler>
+        <hashTree/>
         <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="ForEach Controller" enabled="true">
           <stringProp name="ForeachController.inputVal">FIXTURE_OBJECTS</stringProp>
           <stringProp name="ForeachController.returnVal">objectdir</stringProp>
@@ -1626,7 +1538,7 @@ if (prev.getResponseCode() == &quot;409&quot;) {
             <stringProp name="parameters"></stringProp>
             <stringProp name="script">log.info(&quot;Object Directory: &quot; + vars.get(&apos;objectdir&apos;));
 importPackage(java.io)
-fstream = new FileInputStream(vars.get(&apos;objectdir&apos;) + &quot;/manifest-md5.txt&quot;);
+fstream = new FileInputStream(vars.get(&apos;objectdir&apos;) + &quot;/manifest.txt&quot;);
 dis = new DataInputStream(fstream);
 isr = new InputStreamReader(dis);
 br = new BufferedReader(isr);
@@ -1637,15 +1549,16 @@ for(i = 0; i&lt; 100; i++) {
 
 var i = 0;
 var strLine;
-while((strLine = br.readLine()) != null) {
-i++;
-filepath = vars.get(&apos;objectdir&apos;) + &quot;/&quot; + strLine.split(&quot; &quot;).slice(-1)[0];
-f = new File(filepath);
 
-if(f.exists()) {
-log.info(strLine.split(&quot; &quot;).slice(-1)[0]);
-vars.put(&quot;FILE_&quot; + i, filepath);
-}
+while((strLine = br.readLine()) != null) {
+    log.info(&quot;LINE: &quot; + strLine);
+    i++;
+    filepath = vars.get(&apos;objectdir&apos;) + &quot;/&quot; + strLine;
+    f = new File(filepath);
+    if(f.exists()) {
+        log.info(strLine);
+        vars.put(&quot;FILE_&quot; + i, filepath);
+    }
 }</stringProp>
             <stringProp name="scriptLanguage">javascript</stringProp>
           </BSFPostProcessor>
@@ -1810,7 +1723,7 @@ if (resp.getStatusLine().getStatusCode() == 201){
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Lily Group (versioned, same record)" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Lily Group (versioned, same record)" enabled="false">
         <stringProp name="TestPlan.comments">Loops through filenames and create nodes for each</stringProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
