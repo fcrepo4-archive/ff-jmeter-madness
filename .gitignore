@@ -1,2 +1,5 @@
 jetty/*
 hydra-jetty/*
+log/*.log
+log/*.csv
+jmeter.log
