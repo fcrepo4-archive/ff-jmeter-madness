@@ -44,7 +44,22 @@
           </elementProp>
           <elementProp name="numthreads" elementType="Argument">
             <stringProp name="Argument.name">numthreads</stringProp>
-            <stringProp name="Argument.value">${__property(numthreads,,5)}</stringProp>
+            <stringProp name="Argument.value">${__property(numthreads,,2)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="numdatastreams" elementType="Argument">
+            <stringProp name="Argument.name">numdatastreams</stringProp>
+            <stringProp name="Argument.value">${__property(numdatastreams, 10)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="seed" elementType="Argument">
+            <stringProp name="Argument.name">seed</stringProp>
+            <stringProp name="Argument.value">42</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="filesize_multiplier" elementType="Argument">
+            <stringProp name="Argument.name">filesize_multiplier</stringProp>
+            <stringProp name="Argument.value">1024</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -52,7 +67,7 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <BSFPostProcessor guiclass="TestBeanGUI" testclass="BSFPostProcessor" testname="Get fixture bags" enabled="true">
+      <BSFPostProcessor guiclass="TestBeanGUI" testclass="BSFPostProcessor" testname="Get fixture bags" enabled="false">
         <stringProp name="scriptLanguage">javascript</stringProp>
         <stringProp name="parameters"></stringProp>
         <stringProp name="filename"></stringProp>
@@ -76,7 +91,7 @@ for(i = 0; i&lt; list.length; i++) {
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">${__property(loopcount,,1)}</stringProp>
+          <stringProp name="LoopController.loops">${__property(loopcount,,10)}</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${numthreads}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
@@ -108,104 +123,139 @@ for(i = 0; i&lt; list.length; i++) {
           </collectionProp>
         </HeaderManager>
         <hashTree/>
-        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
-          <boolProp name="displayJMeterProperties">false</boolProp>
-          <boolProp name="displayJMeterVariables">true</boolProp>
-          <boolProp name="displaySystemProperties">false</boolProp>
-        </DebugSampler>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fedora Delete Object Request" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value"></stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${FEDORA_SERVER_NAME}</stringProp>
+          <stringProp name="HTTPSampler.port">${FEDORA_SERVER_PORTNUMBER}</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${__counter(FALSE,nodename)},OUT,,Deleting node )}</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="TestPlan.comments">One exercise of the ModeShape REST API to create a node</stringProp>
+        </HTTPSamplerProxy>
         <hashTree/>
-        <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="ForEach Controller" enabled="true">
-          <stringProp name="ForeachController.inputVal">FIXTURE_OBJECTS</stringProp>
-          <stringProp name="ForeachController.returnVal">objectdir</stringProp>
-          <boolProp name="ForeachController.useSeparator">true</boolProp>
-        </ForeachController>
-        <hashTree>
-          <BSFPostProcessor guiclass="TestBeanGUI" testclass="BSFPostProcessor" testname="Get list of each file in the manifest of the bags" enabled="true">
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(vars.get(&apos;objectdir&apos;));
-importPackage(java.io)
-fstream = new FileInputStream(vars.get(&apos;objectdir&apos;) + &quot;/manifest-md5.txt&quot;);
-dis = new DataInputStream(fstream);
-isr = new InputStreamReader(dis);
-br = new BufferedReader(isr);
+        <BSFPreProcessor guiclass="TestBeanGUI" testclass="BSFPreProcessor" testname="BSF PreProcessor" enabled="true">
+          <stringProp name="scriptLanguage">javascript</stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="script">
+importPackage(java.util);
+importPackage(java.lang);
 
-for(i = 0; i&lt; 100; i++) {
-  vars.remove(&quot;FILE_&quot; + i);
-}
+var gen = new Random(vars.get(&quot;seed&quot;));
 
-var i = 0;
-var strLine;
-while((strLine = br.readLine()) != null) {
-i++;
-filepath = vars.get(&apos;objectdir&apos;) + &quot;/&quot; + strLine.split(&quot; &quot;).slice(-1)[0];
-f = new File(filepath);
+var i;
 
-if(f.exists()) {
-log.info(strLine.split(&quot; &quot;).slice(-1)[0]);
-vars.put(&quot;FILE_&quot; + i, filepath);
-}
+for(i = 0; i&lt;10; i++) {
+  vars.put(&quot;DS_&quot; + (i+1) + &quot;_SIZE&quot;, Math.round(Math.abs(gen.nextGaussian())*vars.get(&quot;filesize_multiplier&quot;)));
 }</stringProp>
+        </BSFPreProcessor>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fedora Create Object Request" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value"></stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${FEDORA_SERVER_NAME}</stringProp>
+          <stringProp name="HTTPSampler.port">${FEDORA_SERVER_PORTNUMBER}</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${nodename},OUT,,Creating node )}</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="TestPlan.comments">One exercise of the Fedora REST API to create a node</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>true</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>true</code>
+                <message>true</message>
+                <threadName>true</threadName>
+                <dataType>true</dataType>
+                <encoding>false</encoding>
+                <assertions>true</assertions>
+                <subresults>true</subresults>
+                <responseData>false</responseData>
+                <samplerData>false</samplerData>
+                <xml>true</xml>
+                <fieldNames>false</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>false</responseDataOnError>
+                <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <bytes>true</bytes>
+              </value>
+            </objProp>
+            <stringProp name="filename"></stringProp>
+          </ResultCollector>
+          <hashTree/>
+        </hashTree>
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
+          <stringProp name="WhileController.condition">${__javaScript(${dsid}&lt;10)}</stringProp>
+        </WhileController>
+        <hashTree>
+          <BSFPreProcessor guiclass="TestBeanGUI" testclass="BSFPreProcessor" testname="BSF PreProcessor" enabled="true">
             <stringProp name="scriptLanguage">javascript</stringProp>
-          </BSFPostProcessor>
+            <stringProp name="parameters">${__counter(TRUE, dsid)}</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="script">importPackage(java.io);
+
+var filename = &quot;random_file_&quot; + vars.get(&quot;nodename&quot;);
+var ds_size = vars.get(&quot;DS_&quot; + vars.get(&apos;dsid&apos;) + &quot;_SIZE&quot;);
+
+var f = new RandomAccessFile(filename, &quot;rw&quot;);
+f.setLength(ds_size);
+f.close();
+
+vars.put(&quot;filename&quot;, filename);</stringProp>
+          </BSFPreProcessor>
           <hashTree/>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fedora Delete Object Request" enabled="true">
-            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain">${FEDORA_SERVER_NAME}</stringProp>
-            <stringProp name="HTTPSampler.port">${FEDORA_SERVER_PORTNUMBER}</stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol"></stringProp>
-            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${__counter(FALSE, nodename)},OUT,,Deleting node )}</stringProp>
-            <stringProp name="HTTPSampler.method">DELETE</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <boolProp name="HTTPSampler.monitor">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-            <stringProp name="TestPlan.comments">One exercise of the ModeShape REST API to create a node</stringProp>
-          </HTTPSamplerProxy>
-          <hashTree/>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fedora Create Object Request" enabled="true">
-            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain">${FEDORA_SERVER_NAME}</stringProp>
-            <stringProp name="HTTPSampler.port">${FEDORA_SERVER_PORTNUMBER}</stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol"></stringProp>
-            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${nodename},OUT,,Creating node )}</stringProp>
-            <stringProp name="HTTPSampler.method">POST</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <boolProp name="HTTPSampler.monitor">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-            <stringProp name="TestPlan.comments">One exercise of the Fedora REST API to create a node</stringProp>
-          </HTTPSamplerProxy>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="false">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
           <hashTree>
-            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
               <boolProp name="ResultCollector.error_logging">false</boolProp>
               <objProp>
                 <name>saveConfig</name>
@@ -238,76 +288,82 @@ vars.put(&quot;FILE_&quot; + i, filepath);
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="For each file in the bag" enabled="true">
-            <stringProp name="ForeachController.inputVal">FILE</stringProp>
-            <stringProp name="ForeachController.returnVal">filename</stringProp>
-            <boolProp name="ForeachController.useSeparator">true</boolProp>
-          </ForeachController>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fedora Create Binary Resource Request" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${FEDORA_SERVER_NAME}</stringProp>
+            <stringProp name="HTTPSampler.port">${FEDORA_SERVER_PORTNUMBER}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${nodename},OUT,,Adding binary content )}/datastreams/DS_${dsid}?controlGroup=M</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
+              <collectionProp name="HTTPFileArgs.files">
+                <elementProp name="${filename}" elementType="HTTPFileArg">
+                  <stringProp name="File.path">${filename}</stringProp>
+                  <stringProp name="File.paramname">file</stringProp>
+                  <stringProp name="File.mimetype"></stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="TestPlan.comments">One exercise of the Fedora REST API to create a datastream</stringProp>
+          </HTTPSamplerProxy>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fedora Create Binary Resource Request" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-                <collectionProp name="Arguments.arguments"/>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain">${FEDORA_SERVER_NAME}</stringProp>
-              <stringProp name="HTTPSampler.port">${FEDORA_SERVER_PORTNUMBER}</stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${nodename},OUT,,Adding binary content )}/datastreams/DS_${__javaScript(&quot;${filename}&quot;.split(&quot;/&quot;).slice(-1)[0])}?controlGroup=M</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
-                <collectionProp name="HTTPFileArgs.files">
-                  <elementProp name="${filename}" elementType="HTTPFileArg">
-                    <stringProp name="File.path">${filename}</stringProp>
-                    <stringProp name="File.paramname">file</stringProp>
-                    <stringProp name="File.mimetype"></stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <boolProp name="HTTPSampler.monitor">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">One exercise of the Fedora REST API to create a datastream</stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
-                <boolProp name="ResultCollector.error_logging">false</boolProp>
-                <objProp>
-                  <name>saveConfig</name>
-                  <value class="SampleSaveConfiguration">
-                    <time>true</time>
-                    <latency>true</latency>
-                    <timestamp>true</timestamp>
-                    <success>true</success>
-                    <label>true</label>
-                    <code>true</code>
-                    <message>true</message>
-                    <threadName>true</threadName>
-                    <dataType>true</dataType>
-                    <encoding>false</encoding>
-                    <assertions>true</assertions>
-                    <subresults>true</subresults>
-                    <responseData>false</responseData>
-                    <samplerData>false</samplerData>
-                    <xml>true</xml>
-                    <fieldNames>false</fieldNames>
-                    <responseHeaders>false</responseHeaders>
-                    <requestHeaders>false</requestHeaders>
-                    <responseDataOnError>false</responseDataOnError>
-                    <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-                    <assertionsResultsToSave>0</assertionsResultsToSave>
-                    <bytes>true</bytes>
-                  </value>
-                </objProp>
-                <stringProp name="filename"></stringProp>
-              </ResultCollector>
-              <hashTree/>
-            </hashTree>
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>true</xml>
+                  <fieldNames>false</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
           </hashTree>
+          <BSFPostProcessor guiclass="TestBeanGUI" testclass="BSFPostProcessor" testname="BSF PostProcessor" enabled="true">
+            <stringProp name="scriptLanguage">javascript</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="script">importPackage(java.io);
+
+filename =  vars.get(&quot;filename&quot;);
+
+file = new File(filename);
+
+file.delete();</stringProp>
+          </BSFPostProcessor>
+          <hashTree/>
         </hashTree>
         <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
@@ -338,7 +394,7 @@ vars.put(&quot;FILE_&quot; + i, filepath);
               <bytes>true</bytes>
             </value>
           </objProp>
-          <stringProp name="filename">${HARNESS_RESULTS_DIRECTORY}/jmeter-fedora-threads${numthreads}threads.csv</stringProp>
+          <stringProp name="filename">${HARNESS_RESULTS_DIRECTORY}/jmeter-fedora-${filesize_multiplier}multiplier-${numthreads}threads.csv</stringProp>
         </ResultCollector>
         <hashTree/>
       </hashTree>
