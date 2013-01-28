@@ -59,12 +59,12 @@
           </elementProp>
           <elementProp name="filesize_stddev" elementType="Argument">
             <stringProp name="Argument.name">filesize_stddev</stringProp>
-            <stringProp name="Argument.value">1024</stringProp>
+            <stringProp name="Argument.value">${__property(filesize_stddev,,1024)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="filesize_mean" elementType="Argument">
             <stringProp name="Argument.name">filesize_mean</stringProp>
-            <stringProp name="Argument.value">1048576</stringProp>
+            <stringProp name="Argument.value">${__property(filesize_mean,,1048576)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="DO_WRITE_TESTS" elementType="Argument">
