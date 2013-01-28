@@ -436,6 +436,67 @@ while((strLine = br.readLine()) != null) {
             <stringProp name="scriptLanguage">javascript</stringProp>
           </BSFPostProcessor>
           <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="ModeShape Read Node Request" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${MODESHAPE_SERVER_NAME}</stringProp>
+            <stringProp name="HTTPSampler.port">${MODESHAPE_SERVER_PORTNUMBER}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/${MODESHAPE_SERVER_APPLICATION_CONTEXT}/${MODESHAPE_REPO_NAME}/${MODESHAPE_WORKSPACE_NAME}${__log(/items/fedora/${__threadNum}_${__counter(FALSE,nodename2)},OUT,,Reading node )}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="TestPlan.comments">One exercise of the ModeShape REST API to read a node</stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>false</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>true</xml>
+                  <fieldNames>false</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <url>true</url>
+                </value>
+              </objProp>
+              <stringProp name="filename">${HARNESS_RESULTS_DIRECTORY}/noderead-modeshape.log</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
           <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="ForEach file" enabled="true">
             <stringProp name="ForeachController.inputVal">FILE</stringProp>
             <stringProp name="ForeachController.returnVal">filename</stringProp>
@@ -452,7 +513,7 @@ while((strLine = br.readLine()) != null) {
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/${MODESHAPE_SERVER_APPLICATION_CONTEXT}/${MODESHAPE_REPO_NAME}/${MODESHAPE_WORKSPACE_NAME}/binary/${__log(fedora/${__threadNum}_${nodename},OUT,,Reading binary content )}/binaryContent</stringProp>
+              <stringProp name="HTTPSampler.path">/${MODESHAPE_SERVER_APPLICATION_CONTEXT}/${MODESHAPE_REPO_NAME}/${MODESHAPE_WORKSPACE_NAME}/binary/${__log(fedora/${__threadNum}_${nodename2},OUT,,Reading binary content )}/binaryContent</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -550,7 +611,7 @@ while((strLine = br.readLine()) != null) {
         <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="HTTP Authorization Manager" enabled="true">
           <collectionProp name="AuthManager.auth_list">
             <elementProp name="" elementType="Authorization">
-              <stringProp name="Authorization.url">http://localhost:8080/fedora</stringProp>
+              <stringProp name="Authorization.url">http://localhost:8983/fedora</stringProp>
               <stringProp name="Authorization.username">fedoraAdmin</stringProp>
               <stringProp name="Authorization.password">fedoraAdmin</stringProp>
               <stringProp name="Authorization.domain"></stringProp>
@@ -837,6 +898,67 @@ vars.put(&quot;FILE_&quot; + i, filepath);
             <stringProp name="scriptLanguage">javascript</stringProp>
           </BSFPostProcessor>
           <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fedora Read Object Request" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${FEDORA_SERVER_NAME}</stringProp>
+            <stringProp name="HTTPSampler.port">${FEDORA_SERVER_PORTNUMBER}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${__threadNum}_${__counter(FALSE,nodename2)},OUT,,Reading node )}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="TestPlan.comments">One exercise of the Fedora REST API to read an object</stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>false</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>true</xml>
+                  <fieldNames>false</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <url>true</url>
+                </value>
+              </objProp>
+              <stringProp name="filename">${HARNESS_RESULTS_DIRECTORY}/noderead-fedora.log</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
           <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="ForEach Controller" enabled="true">
             <stringProp name="ForeachController.inputVal">FILE</stringProp>
             <stringProp name="ForeachController.returnVal">filename</stringProp>
@@ -853,7 +975,7 @@ vars.put(&quot;FILE_&quot; + i, filepath);
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${__threadNum}_${nodename},OUT,,Adding binary content )}/datastreams/DS_${__javaScript(&quot;${filename}&quot;.split(&quot;/&quot;).slice(-1)[0])}</stringProp>
+              <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${__threadNum}_${nodename2},OUT,,Reading binary content )}/datastreams/DS_${__javaScript(&quot;${filename}&quot;.split(&quot;/&quot;).slice(-1)[0])}/content</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1344,6 +1466,67 @@ vars.put(&quot;FILE_&quot; + i, filepath);
             <stringProp name="scriptLanguage">javascript</stringProp>
           </BSFPostProcessor>
           <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Databank Read Object Request" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${DATABANK_HOST}</stringProp>
+            <stringProp name="HTTPSampler.port">${DATABANK_PORT}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">${DATABANK_PREFIX}/jmeter-test/datasets/${__log(test-${__threadNum}_${__counter(FALSE,nodename2)},OUT,,Reading node )}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="TestPlan.comments">One exercise of the Databank REST API to read a node</stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>false</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>false</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>true</xml>
+                  <fieldNames>false</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <url>true</url>
+                </value>
+              </objProp>
+              <stringProp name="filename">${HARNESS_RESULTS_DIRECTORY}/noderead-databank.log</stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
           <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="ForEach Controller" enabled="true">
             <stringProp name="ForeachController.inputVal">FILE</stringProp>
             <stringProp name="ForeachController.returnVal">filename</stringProp>
@@ -1352,15 +1535,7 @@ vars.put(&quot;FILE_&quot; + i, filepath);
           <hashTree>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Databank Read Binary Resource Request" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="filename" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${__javaScript(&quot;${filename}&quot;.split(&quot;/&quot;).slice(-1)[0])}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">filename</stringProp>
-                  </elementProp>
-                </collectionProp>
+                <collectionProp name="Arguments.arguments"/>
               </elementProp>
               <stringProp name="HTTPSampler.domain">${DATABANK_HOST}</stringProp>
               <stringProp name="HTTPSampler.port">${DATABANK_PORT}</stringProp>
@@ -1368,12 +1543,12 @@ vars.put(&quot;FILE_&quot; + i, filepath);
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${DATABANK_PREFIX}/jmeter-test/datasets/test-${__threadNum}_${nodename}</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <stringProp name="HTTPSampler.path">${DATABANK_PREFIX}/jmeter-test/datasets/${__log(test-${__threadNum}_${nodename2},OUT,,Reading binary content )}/${__javaScript(&quot;${filename}&quot;.split(&quot;/&quot;).slice(-1)[0])}</stringProp>
+              <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
               <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
                 <collectionProp name="HTTPFileArgs.files">
                   <elementProp name="${filename}" elementType="HTTPFileArg">
