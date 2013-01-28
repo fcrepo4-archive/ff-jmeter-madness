@@ -47,19 +47,24 @@
             <stringProp name="Argument.value">${__property(numthreads,,2)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="loopcount" elementType="Argument">
+            <stringProp name="Argument.name">loopcount</stringProp>
+            <stringProp name="Argument.value">${__property(loopcount,,10)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
           <elementProp name="numdatastreams" elementType="Argument">
             <stringProp name="Argument.name">numdatastreams</stringProp>
-            <stringProp name="Argument.value">${__property(numdatastreams, 10)}</stringProp>
+            <stringProp name="Argument.value">${__property(numdatastreams,, 10)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="seed" elementType="Argument">
-            <stringProp name="Argument.name">seed</stringProp>
-            <stringProp name="Argument.value">42</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="filesize_multiplier" elementType="Argument">
-            <stringProp name="Argument.name">filesize_multiplier</stringProp>
+          <elementProp name="filesize_stddev" elementType="Argument">
+            <stringProp name="Argument.name">filesize_stddev</stringProp>
             <stringProp name="Argument.value">1024</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="filesize_mean" elementType="Argument">
+            <stringProp name="Argument.name">filesize_mean</stringProp>
+            <stringProp name="Argument.value">1048576</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="DO_WRITE_TESTS" elementType="Argument">
@@ -72,6 +77,16 @@
             <stringProp name="Argument.value">${__property(read,,true)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="seed" elementType="Argument">
+            <stringProp name="Argument.name">seed</stringProp>
+            <stringProp name="Argument.value">${__property(seed,,42)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="current_loop_counter" elementType="Argument">
+            <stringProp name="Argument.name">current_loop_counter</stringProp>
+            <stringProp name="Argument.value">0</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </elementProp>
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
@@ -82,7 +97,7 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">${__property(loopcount,,10)}</stringProp>
+          <stringProp name="LoopController.loops">${loopcount}</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${numthreads}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
@@ -114,18 +129,74 @@
           </collectionProp>
         </HeaderManager>
         <hashTree/>
+        <BSFPreProcessor guiclass="TestBeanGUI" testclass="BSFPreProcessor" testname="Calculate DS sizes seeds" enabled="true">
+          <stringProp name="scriptLanguage">javascript</stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="script">importPackage(java.util);
+
+var seed = vars.get(&apos;seed&apos;);
+var gen = new Random(seed);
+
+var i;
+var max = vars.get(&quot;numthreads&quot;) * vars.get(&quot;loopcount&quot;);
+
+for(i = 0; i&lt; max; i++) {
+  vars.put(&quot;LOOP_SEED_&quot; + (i+1), gen.nextLong());
+}</stringProp>
+        </BSFPreProcessor>
+        <hashTree/>
         <BSFPreProcessor guiclass="TestBeanGUI" testclass="BSFPreProcessor" testname="Calculate DS ids" enabled="true">
           <stringProp name="scriptLanguage">javascript</stringProp>
           <stringProp name="parameters"></stringProp>
           <stringProp name="filename"></stringProp>
           <stringProp name="script">var i;
 
-for(i = 0; i&lt;10; i++) {
+for(i = 0; i&lt;parseInt(vars.get(&apos;numdatastreams&apos;)); i++) {
   vars.put(&quot;DS_&quot; + (i+1), &quot;DS_&quot; + (i+1));
 }</stringProp>
         </BSFPreProcessor>
         <hashTree/>
-        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="true">
+        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="false">
+          <boolProp name="displayJMeterProperties">false</boolProp>
+          <boolProp name="displayJMeterVariables">true</boolProp>
+          <boolProp name="displaySystemProperties">false</boolProp>
+        </DebugSampler>
+        <hashTree>
+          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>true</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>true</code>
+                <message>true</message>
+                <threadName>true</threadName>
+                <dataType>true</dataType>
+                <encoding>false</encoding>
+                <assertions>true</assertions>
+                <subresults>true</subresults>
+                <responseData>false</responseData>
+                <samplerData>false</samplerData>
+                <xml>true</xml>
+                <fieldNames>false</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>false</responseDataOnError>
+                <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <bytes>true</bytes>
+              </value>
+            </objProp>
+            <stringProp name="filename"></stringProp>
+          </ResultCollector>
+          <hashTree/>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller (writes)" enabled="true">
           <stringProp name="IfController.condition">${DO_WRITE_TESTS}</stringProp>
           <boolProp name="IfController.evaluateAll">false</boolProp>
         </IfController>
@@ -134,16 +205,22 @@ for(i = 0; i&lt;10; i++) {
             <stringProp name="scriptLanguage">javascript</stringProp>
             <stringProp name="parameters"></stringProp>
             <stringProp name="filename"></stringProp>
-            <stringProp name="script">
-importPackage(java.util);
+            <stringProp name="script">importPackage(java.util);
 importPackage(java.lang);
 
-var gen = new Random(vars.get(&quot;seed&quot;));
+var seed = vars.get(&quot;LOOP_SEED_&quot; + vars.get(&apos;nodename&apos;));
+
+var gen = new Random(seed);
 
 var i;
 
 for(i = 0; i&lt;10; i++) {
-  vars.put(&quot;DS_&quot; + (i+1) + &quot;_SIZE&quot;, Math.round(Math.abs(gen.nextGaussian())*vars.get(&quot;filesize_multiplier&quot;)));
+  var size = -1;
+  while(size &lt; 0) {
+    size = gen.nextGaussian()*vars.get(&quot;filesize_stddev&quot;) + vars.get(&quot;filesize_mean&quot;);
+  }
+
+  vars.put(&quot;DS_&quot; + (i+1) + &quot;_SIZE&quot;, size);
 }</stringProp>
           </BSFPreProcessor>
           <hashTree/>
@@ -288,7 +365,7 @@ vars.put(&quot;filename&quot;, filename);</stringProp>
               <stringProp name="TestPlan.comments">One exercise of the Fedora REST API to create a datastream</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
-              <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
                 <boolProp name="ResultCollector.error_logging">false</boolProp>
                 <objProp>
                   <name>saveConfig</name>
@@ -336,7 +413,7 @@ file.delete();</stringProp>
             <hashTree/>
           </hashTree>
         </hashTree>
-        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="true">
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller (reads)" enabled="true">
           <stringProp name="IfController.condition">${DO_READ_TESTS}</stringProp>
           <boolProp name="IfController.evaluateAll">false</boolProp>
         </IfController>
@@ -396,7 +473,7 @@ file.delete();</stringProp>
               <stringProp name="TestPlan.comments">One exercise of the Fedora REST API to read a datastream</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
-              <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
                 <boolProp name="ResultCollector.error_logging">false</boolProp>
                 <objProp>
                   <name>saveConfig</name>
