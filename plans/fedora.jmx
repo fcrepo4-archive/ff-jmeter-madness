@@ -537,7 +537,7 @@ file.delete();</stringProp>
               <bytes>true</bytes>
             </value>
           </objProp>
-          <stringProp name="filename">${HARNESS_RESULTS_DIRECTORY}/jmeter-fedora-${filesize_multiplier}multiplier-${numthreads}threads.csv</stringProp>
+          <stringProp name="filename">${HARNESS_RESULTS_DIRECTORY}/jmeter-fedora-${filesize_mean}mean-${filesize_stddev}stddev-${numthreads}threads.csv</stringProp>
         </ResultCollector>
         <hashTree/>
       </hashTree>
