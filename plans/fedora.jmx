@@ -44,7 +44,7 @@
           </elementProp>
           <elementProp name="numthreads" elementType="Argument">
             <stringProp name="Argument.name">numthreads</stringProp>
-            <stringProp name="Argument.value">${__property(numthreads,,2)}</stringProp>
+            <stringProp name="Argument.value">${__property(numthreads,,1)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="loopcount" elementType="Argument">
@@ -64,7 +64,7 @@
           </elementProp>
           <elementProp name="filesize_mean" elementType="Argument">
             <stringProp name="Argument.name">filesize_mean</stringProp>
-            <stringProp name="Argument.value">${__property(filesize_mean,,1048576)}</stringProp>
+            <stringProp name="Argument.value">${__property(filesize_mean,,8388608)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="DO_WRITE_TESTS" elementType="Argument">
@@ -157,45 +157,6 @@ for(i = 0; i&lt;parseInt(vars.get(&apos;numdatastreams&apos;)); i++) {
 }</stringProp>
         </BSFPreProcessor>
         <hashTree/>
-        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="false">
-          <boolProp name="displayJMeterProperties">false</boolProp>
-          <boolProp name="displayJMeterVariables">true</boolProp>
-          <boolProp name="displaySystemProperties">false</boolProp>
-        </DebugSampler>
-        <hashTree>
-          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-            <boolProp name="ResultCollector.error_logging">false</boolProp>
-            <objProp>
-              <name>saveConfig</name>
-              <value class="SampleSaveConfiguration">
-                <time>true</time>
-                <latency>true</latency>
-                <timestamp>true</timestamp>
-                <success>true</success>
-                <label>true</label>
-                <code>true</code>
-                <message>true</message>
-                <threadName>true</threadName>
-                <dataType>true</dataType>
-                <encoding>false</encoding>
-                <assertions>true</assertions>
-                <subresults>true</subresults>
-                <responseData>false</responseData>
-                <samplerData>false</samplerData>
-                <xml>true</xml>
-                <fieldNames>false</fieldNames>
-                <responseHeaders>false</responseHeaders>
-                <requestHeaders>false</requestHeaders>
-                <responseDataOnError>false</responseDataOnError>
-                <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-                <assertionsResultsToSave>0</assertionsResultsToSave>
-                <bytes>true</bytes>
-              </value>
-            </objProp>
-            <stringProp name="filename"></stringProp>
-          </ResultCollector>
-          <hashTree/>
-        </hashTree>
         <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller (writes)" enabled="true">
           <stringProp name="IfController.condition">${DO_WRITE_TESTS}</stringProp>
           <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -213,17 +174,56 @@ var seed = vars.get(&quot;LOOP_SEED_&quot; + vars.get(&apos;nodename&apos;));
 var gen = new Random(seed);
 
 var i;
-
 for(i = 0; i&lt;10; i++) {
   var size = -1;
   while(size &lt; 0) {
-    size = gen.nextGaussian()*vars.get(&quot;filesize_stddev&quot;) + vars.get(&quot;filesize_mean&quot;);
+    size = gen.nextGaussian()*parseInt(vars.get(&quot;filesize_stddev&quot;)) + parseInt(vars.get(&quot;filesize_mean&quot;));
   }
+
 
   vars.put(&quot;DS_&quot; + (i+1) + &quot;_SIZE&quot;, size);
 }</stringProp>
           </BSFPreProcessor>
           <hashTree/>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="false">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
+          <hashTree>
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>true</xml>
+                  <fieldNames>false</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fedora Delete Object Request" enabled="true">
             <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -325,11 +325,11 @@ for(i = 0; i&lt;10; i++) {
               <stringProp name="filename"></stringProp>
               <stringProp name="script">importPackage(java.io);
 
-var filename = &quot;random_file_&quot; + vars.get(&quot;nodename&quot;);
+var filename = &quot;random_file_&quot; + vars.get(&quot;nodename&quot;) + vars.get(&apos;dsid&apos;);
 var ds_size = vars.get(vars.get(&apos;dsid&apos;) + &quot;_SIZE&quot;);
 
 var f = new RandomAccessFile(filename, &quot;rw&quot;);
-f.setLength(ds_size);
+f.setLength(parseInt(ds_size));
 f.close();
 
 vars.put(&quot;filename&quot;, filename);</stringProp>
