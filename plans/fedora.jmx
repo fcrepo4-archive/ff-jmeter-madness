@@ -408,13 +408,24 @@ vars.put(&quot;filename&quot;, filename);</stringProp>
               </ResultCollector>
               <hashTree/>
             </hashTree>
+            <BSFPreProcessor guiclass="TestBeanGUI" testclass="BSFPreProcessor" testname="update counter" enabled="true">
+              <stringProp name="scriptLanguage">javascript</stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">var i;
+
+for(i = 0; i&lt;parseInt(vars.get(&apos;numdatastreamupdates&apos;)); i++) {
+  vars.put(&quot;N_&quot; + (i+1), &quot;N_&quot; + (i+1));
+}</stringProp>
+            </BSFPreProcessor>
+            <hashTree/>
             <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="ForEach Controller" enabled="true">
               <stringProp name="ForeachController.inputVal">N</stringProp>
-              <stringProp name="ForeachController.returnVal">numdatastreamupdates</stringProp>
+              <stringProp name="ForeachController.returnVal">updatecount</stringProp>
               <boolProp name="ForeachController.useSeparator">true</boolProp>
             </ForeachController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Update Binary Resource" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Modify Binary Resource" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
                   <collectionProp name="Arguments.arguments"/>
                 </elementProp>
@@ -424,7 +435,7 @@ vars.put(&quot;filename&quot;, filename);</stringProp>
                 <stringProp name="HTTPSampler.response_timeout"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${nodename}/datastreams/${dsid},OUT,,Adding binary content )}?controlGroup=M</stringProp>
+                <stringProp name="HTTPSampler.path">/${FEDORA_SERVER_APPLICATION_CONTEXT}/objects/${__log(test:${nodename}/datastreams/${dsid},OUT,,Modifying binary content )}?controlGroup=M</stringProp>
                 <stringProp name="HTTPSampler.method">PUT</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -441,7 +452,7 @@ vars.put(&quot;filename&quot;, filename);</stringProp>
                 </elementProp>
                 <boolProp name="HTTPSampler.monitor">false</boolProp>
                 <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="TestPlan.comments">One exercise of the Fedora REST API to update a datastream</stringProp>
+                <stringProp name="TestPlan.comments">One exercise of the Fedora REST API to modify a datastream</stringProp>
               </HTTPSamplerProxy>
               <hashTree>
                 <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
