@@ -184,7 +184,7 @@ var seed = vars.get(&quot;LOOP_SEED_&quot; + vars.get(&apos;nodename&apos;));
 var gen = new Random(seed);
 
 var i;
-for(i = 0; i&lt;10; i++) {
+for(i = 0; i &lt; parseInt(vars.get(&apos;numdatastreamupdates&apos;)); i++) {
   var size = -1;
   while(size &lt; 0) {
     size = gen.nextGaussian()*parseInt(vars.get(&quot;filesize_stddev&quot;)) + parseInt(vars.get(&quot;filesize_mean&quot;));
