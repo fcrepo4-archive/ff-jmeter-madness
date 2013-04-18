@@ -222,7 +222,7 @@ if(!dir.exists()) {
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/rest/describe</stringProp>
+          <stringProp name="HTTPSampler.path">/${FEDORA_4_SERVER_CONTEXT}/describe</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -431,9 +431,12 @@ while(size &lt; 0) {
   size = random.nextGaussian() * std_deviation_size + mean_size;
 }
 file.setLength(size);
-var position = random.nextInt(size - 4);
-file.seek(position);
-file.writeInt(random.nextInt());
+// Test with less than 4 bytes may be off.
+if((size - 4) &gt; 0) { 
+ var position = random.nextInt(size - 4);
+ file.seek(position);
+ file.writeInt(random.nextInt());
+}
 file.close();</stringProp>
             <stringProp name="scriptLanguage">javascript</stringProp>
           </BSFSampler>
@@ -829,9 +832,12 @@ var filename = fixtures_directory + &quot;/fixture_&quot; + vars.get(&apos;pid&a
 var file = new RandomAccessFile(filename, &quot;rw&quot;);
 var size = file.length();
 var random= new Random(vars.get(&apos;modify_datastream_counter&apos;));
-var position = random.nextInt(size - 4);
-file.seek(position);
-file.writeInt(1 + random.nextInt());
+// Test with less than 4 bytes may be off.
+if((size - 4) &gt; 0) { 
+ var position = random.nextInt(size - 4);
+ file.seek(position);
+ file.writeInt(1 + random.nextInt());
+}
 file.close();</stringProp>
             </BSFPreProcessor>
             <hashTree/>
