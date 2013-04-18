@@ -3,3 +3,6 @@ hydra-jetty/*
 log/*.log
 log/*.csv
 jmeter.log
+jmeter/bin/log
+jmeter/bin/fixtures
+.DS_Store
