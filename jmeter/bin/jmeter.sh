@@ -28,4 +28,5 @@
 ##   ==============================================
 
 # Add Mac-specific property - should be ignored elsewhere (Bug 47064)
-java $JVM_ARGS -Dapple.laf.useScreenMenuBar=true -jar `dirname $0`/ApacheJMeter.jar "$@"
+heap_size='1024m'
+java $JVM_ARGS -Dapple.laf.useScreenMenuBar=true -Xms$heap_size -Xmx$heap_size -jar `dirname $0`/ApacheJMeter.jar "$@"

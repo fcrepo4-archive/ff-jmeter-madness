@@ -79,7 +79,7 @@
           </elementProp>
           <elementProp name="LOG_DIRECTORY" elementType="Argument">
             <stringProp name="Argument.name">LOG_DIRECTORY</stringProp>
-            <stringProp name="Argument.value">log</stringProp>
+            <stringProp name="Argument.value">${__property(log,,log)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="FEDORA_3_SERVER_NAME" elementType="Argument">
