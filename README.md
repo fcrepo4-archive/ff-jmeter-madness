@@ -38,5 +38,10 @@ You can also run JMeter in headless mode.
 meter -n -t ${BASE}/plans/fedora.jmx -Jfedora_4_server=${HOST} -Jfedora_4_context='fcrepo/rest' -Jnum_threads=${THREADS} -Jloop_count=${LOOPS} -Jfilesize_mean=${FILE_SIZE} -Jfilesize_stddev=${STD_DEV}
 ```
 
+### Running the suite for Fedora 4
 
+To run all Fedora 4 tests (create/read/delete), turn on: "Create Fixtures", "Fedora 4", "Destroy Fixtures"
+and make sure "Fedora 4"/"Fedora Module" is set to "Fedora Profiling > Fedora Basic Test".
+
+You may have to clear you data directories under mode.
 
