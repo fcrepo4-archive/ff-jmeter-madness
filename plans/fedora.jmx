@@ -54,7 +54,7 @@
           </elementProp>
           <elementProp name="FEDORA_4_SERVER_CONTEXT" elementType="Argument">
             <stringProp name="Argument.name">FEDORA_4_SERVER_CONTEXT</stringProp>
-            <stringProp name="Argument.value">${__property(fedora_4_context,,fcrepo/rest)}</stringProp>
+            <stringProp name="Argument.value">${__property(fedora_4_context,,rest)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="SEED" elementType="Argument">
@@ -132,7 +132,7 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="HTTP Authorization Manager" enabled="true">
+      <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="HTTP Authorization Manager" enabled="false">
         <collectionProp name="AuthManager.auth_list">
           <elementProp name="" elementType="Authorization">
             <stringProp name="Authorization.url">http://${FEDORA_4_SERVER_NAME}:${FEDORA_4_SERVER_PORT}/rest</stringProp>
@@ -167,17 +167,6 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </SetupThreadGroup>
       <hashTree>
-        <BSFSampler guiclass="TestBeanGUI" testclass="BSFSampler" testname="Create Fixtures Directory" enabled="true">
-          <stringProp name="scriptLanguage">javascript</stringProp>
-          <stringProp name="parameters"></stringProp>
-          <stringProp name="filename"></stringProp>
-          <stringProp name="script">importPackage(java.io);
-var dir = new File(vars.get(&quot;FIXTURES_DIRECTORY&quot;));
-if(!dir.exists()) {
-  dir.mkdir();
-}</stringProp>
-        </BSFSampler>
-        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fedora 3 Describe" enabled="false">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
@@ -406,6 +395,17 @@ if(!dir.exists()) {
           <stringProp name="CounterConfig.format">${PID_NAMESPACE}</stringProp>
           <boolProp name="CounterConfig.per_user">false</boolProp>
         </CounterConfig>
+        <hashTree/>
+        <BSFSampler guiclass="TestBeanGUI" testclass="BSFSampler" testname="Create Fixtures Directory" enabled="true">
+          <stringProp name="scriptLanguage">javascript</stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="script">importPackage(java.io);
+var dir = new File(vars.get(&quot;FIXTURES_DIRECTORY&quot;));
+if(!dir.exists()) {
+  dir.mkdir();
+}</stringProp>
+        </BSFSampler>
         <hashTree/>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Datastreams" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
